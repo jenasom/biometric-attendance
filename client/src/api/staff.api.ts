@@ -8,6 +8,6 @@ import type {
 } from '../interfaces/api.interface';
 import { useBaseMutation } from '../helpers/store.helper';
 
-export const useRegisterStaff = useBaseMutation<RegisterStaffResult, BaseError, RegisterStaffInput>('/staff/register');
+export const useRegisterStaff = useBaseMutation<RegisterStaffResult, BaseError, RegisterStaffInput>('/staff/register', 'post');
 
-export const useLoginStaff = useBaseMutation<LoginStaffResult, BaseError, LoginStaffInput>('/auth/staff/login');
+export const useLoginStaff = useBaseMutation<LoginStaffResult, BaseError, LoginStaffInput>('/auth/staff/login', 'post');

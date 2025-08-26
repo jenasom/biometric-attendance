@@ -89,6 +89,7 @@ export interface Student {
   staff_id: string;
   name: string;
   matric_no: string;
+  email: string;
   fingerprint: string;
   courses: Course[];
   created_at: string;
@@ -98,6 +99,7 @@ export interface AddStudentInput {
   staff_id: string;
   name: string;
   matric_no: string;
+  email: string;
   fingerprint: string;
   courses: string[];
 }

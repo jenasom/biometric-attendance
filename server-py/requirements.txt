@@ -1,3 +1,9 @@
-Flask==2.2.2
-Flask-Cors==3.0.10
-opencv-python==4.6.0.66
+Flask==2.3.3
+Werkzeug==2.3.7
+Flask-Cors==4.0.0
+opencv-python-headless==4.8.0.76
+numpy==1.25.2
+scikit-image==0.21.0
+scipy==1.11.2
+Pillow==10.0.0
+setuptools>=68.0.0

@@ -20,6 +20,7 @@ import staffRoute from './routes/staff.route';
 import courseRoute from './routes/course.route';
 import studentRoute from './routes/student.route';
 import attendanceRoute from './routes/attendance.route';
+import emailTestRoute from './routes/email-test.route';
 
 config();
 
@@ -93,6 +94,7 @@ config();
   app.use(constants.apiBase, courseRoute);
   app.use(constants.apiBase, studentRoute);
   app.use(constants.apiBase, attendanceRoute);
+  app.use(constants.apiBase, emailTestRoute);
 
   const httpServer = createServer(app);
 

@@ -5,19 +5,24 @@ import { removeObjectProps } from './global.helper';
 
 export function useBaseMutation<TRes = unknown, TError = unknown, TData = unknown, TContext = unknown>(
   url: string,
-  method: 'post' | 'put' | 'delete' | 'post',
+  method: 'post' | 'put' | 'delete',
 ) {
   return (useMutationOptions: Omit<UseMutationOptions<TRes, TError, TData, TContext>, 'mutationFn'> = {}) =>
     useMutation<TRes, TError, TData, TContext>(
-      async (data) =>
-        method === 'delete'
-          ? (await axiosClient[method](url + ((data as TData & { url?: string })?.url || ''))).data
-          : (
-              await axiosClient[method](
-                url + ((data as TData & { url?: string })?.url || ''),
-                removeObjectProps(data as { [k: string]: unknown }, ['url']),
-              )
-            ).data,
+      async (data) => {
+        const endpoint = url + ((data as TData & { url?: string })?.url || '');
+        const payload = removeObjectProps(data as { [k: string]: unknown }, ['url']);
+        switch (method) {
+          case 'post':
+            return (await axiosClient.post(endpoint, payload)).data;
+          case 'put':
+            return (await axiosClient.put(endpoint, payload)).data;
+          case 'delete':
+            return (await axiosClient.delete(endpoint, { data: payload })).data;
+          default:
+            throw new Error(`Unsupported method: ${method}`);
+        }
+      },
       useMutationOptions,
     );
 }

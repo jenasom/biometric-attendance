@@ -41,8 +41,10 @@ model Student {
   id          String               @id @default(uuid())
   staff_id    String
   name        String
+  email       String               @unique
   matric_no   String              @unique
-  fingerprint String              @db.LongText
+  fingerprint Bytes               @db.MediumBlob
+  fingerprint_hash String?         @unique
   created_at  DateTime
   courses      StudentCourse[]
   attendances  StudentAttendance[]

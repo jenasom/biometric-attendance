@@ -41,6 +41,7 @@ const AddStudent: FC<{
     staff_id: staffInfo?.id as string,
     name: '',
     matric_no: '',
+    email: '',
     fingerprint: '',
     courses: [],
   });
@@ -56,12 +57,12 @@ const AddStudent: FC<{
     per_page,
   )({ queryKey: ['availablecourses', page], keepPreviousData: true });
   const defaultStudentInput = () =>
-    setStudentInput((prev) => ({ ...prev, name: '', matric_no: '', courses: [], fingerprint: '' }));
+    setStudentInput((prev) => ({ ...prev, name: '', matric_no: '', email: '', courses: [], fingerprint: '' }));
   const { isLoading, mutate: addStudent } = useAddStudent({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['students'] });
       closeDrawer();
-      toast.success('Course added successfully');
+      toast.success('Student added successfully and email has been sent');
       defaultStudentInput();
     },
     onError: (err) => {
@@ -73,7 +74,7 @@ const AddStudent: FC<{
       queryClient.invalidateQueries({ queryKey: ['students'] });
       setActiveStudent(null);
       closeDrawer();
-      toast.success('Course updated successfully');
+      toast.success('Student updated successfully');
       defaultStudentInput();
     },
     onError: (err) => {
@@ -86,6 +87,7 @@ const AddStudent: FC<{
         ...prev,
         name: activeStudent.name,
         matric_no: activeStudent.matric_no,
+        email: activeStudent.email,
         fingerprint: activeStudent.fingerprint,
         courses: activeStudent.courses?.map((course) => course.id),
       }));
@@ -105,8 +107,15 @@ const AddStudent: FC<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSampleAcquired = (event: any) => {
     console.log('Sample acquired => ', event?.samples);
-    const rawImages = event?.samples.map((sample: string) => Base64.fromBase64Url(sample));
+    if (!event?.samples?.length) return;
+    
+    // Convert to binary data
+    const rawImages = event.samples.map((sample: string) => {
+      const base64 = Base64.fromBase64Url(sample);
+      return base64;  // This is now binary data
+    });
 
+    // Store the binary data
     setStudentInput((prev) => ({ ...prev, fingerprint: rawImages[0] }));
   };
 
@@ -181,6 +190,21 @@ const AddStudent: FC<{
                 'matric number',
                 studentInput.matric_no,
                 'required|alpha_num|between:3,128',
+              )}
+            </FormControl>
+            <FormControl marginTop="1rem">
+              <FormLabel>Email</FormLabel>
+              <Input
+                type="email"
+                name="email"
+                required
+                value={studentInput.email}
+                onChange={handleInputChange}
+              />
+              {simpleValidator.current.message(
+                'email',
+                studentInput.email,
+                'required|email',
               )}
             </FormControl>
             <FormControl marginTop="1rem">

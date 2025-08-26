@@ -10,7 +10,7 @@ import type {
 import { useBaseMutation, useBaseQuery } from '../helpers/store.helper';
 import { DeleteStudentResult } from '../interfaces/api.interface';
 
-export const useAddStudent = useBaseMutation<AddStudentResult, BaseError, AddStudentInput>('/student');
+export const useAddStudent = useBaseMutation<AddStudentResult, BaseError, AddStudentInput>('/student', 'post');
 
 export const useGetStudents = (staffId: string, page = 1, per_page = 10) =>
   useBaseQuery<GetStudentsResult, BaseError>(`/students/staff/${staffId}?page=${page}&per_page=${per_page}`);

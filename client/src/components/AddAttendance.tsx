@@ -120,12 +120,19 @@ const AddAttendance: FC<{
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{activeAttendance ? 'Update' : 'Add New'} Attendance</DrawerHeader>
+        <DrawerHeader>{activeAttendance ? 'Update' : 'Create New'} Attendance Session</DrawerHeader>
         <DrawerBody>
           <form className="login-form" method="post" action="#" onSubmit={handleAddAttendance}>
             <FormControl>
-              <FormLabel>Name</FormLabel>
-              <Input type="text" name="name" required value={attendanceInput.name} onChange={handleInputChange} />
+              <FormLabel>Session Name</FormLabel>
+              <Input 
+                type="text" 
+                name="name" 
+                required 
+                value={attendanceInput.name} 
+                onChange={handleInputChange}
+                placeholder="e.g., Morning Class, Afternoon Lab"
+              />
               {simpleValidator.current.message('name', attendanceInput.name, 'required|alpha_num_space|between:3,128')}
             </FormControl>
             <FormControl marginTop="1rem">

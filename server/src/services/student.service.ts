@@ -3,7 +3,7 @@ import { prisma } from '../db/prisma-client';
 import type { Student, StudentCourse, Course } from '@prisma/client';
 import { PrismaBatchPayload } from '../interfaces/helper.interface';
 
-export const saveStudentToDb = (student: Omit<Student, 'id'>): Promise<Student> => {
+export const saveStudentToDb = (student: Omit<Student, 'id'> & { fingerprint_hash?: string }): Promise<Student> => {
   return new Promise<Student>(async (resolve, reject) => {
     try {
       const savedStudent = await prisma.student.create({
@@ -106,13 +106,18 @@ export const getStudentsCourses = (
 export const removeStudentFromDb = (studentId: string): Promise<boolean> => {
   return new Promise<boolean>(async (resolve, reject) => {
     try {
-      const res = await prisma.student.delete({
-        where: {
-          id: studentId,
-        },
-      });
-      if (res) resolve(true);
-      reject(new createError.NotFound('Student not found'));
+      // Delete dependent records (studentAttendance, studentCourse) first to satisfy FK constraints
+      const [deletedAttendances, deletedCourses, deletedStudent] = await prisma.$transaction([
+        prisma.studentAttendance.deleteMany({ where: { student_id: studentId } }),
+        prisma.studentCourse.deleteMany({ where: { student_id: studentId } }),
+        prisma.student.delete({ where: { id: studentId } }),
+      ]);
+
+      if (deletedStudent) {
+        resolve(true);
+      } else {
+        reject(new createError.NotFound('Student not found'));
+      }
     } catch (err) {
       reject(err);
     }
@@ -149,6 +154,20 @@ export const checkIfStudentExists = (matric_no: string, staff_id: string): Promi
       });
       if (course) resolve(true);
       resolve(false);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const findStudentByFingerprintHash = (fingerprintHash: string): Promise<{ id: string; name: string; matric_no: string } | null> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const student = await prisma.student.findFirst({
+        where: { fingerprint_hash: fingerprintHash },
+        select: { id: true, name: true, matric_no: true },
+      });
+      resolve(student || null);
     } catch (err) {
       reject(err);
     }

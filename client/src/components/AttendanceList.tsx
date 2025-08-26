@@ -27,6 +27,7 @@ const AttendanceList: FC<{ isOpen: boolean; onClose: () => void; attendance: Att
   const { data, error, isLoading, isError } = useGetAttendanceList(attendance?.id ?? '')({
     queryKey: ['attendance_list', attendance?.id],
     keepPreviousData: true,
+    enabled: !!attendance?.id, // Only fetch when we have an attendance ID
   });
   return (
     <Modal onClose={onClose} isOpen={isOpen} scrollBehavior="inside">
