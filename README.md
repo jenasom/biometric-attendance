@@ -293,3 +293,5 @@ DISABLE_EMAILS=false
 
 ## Contributing
 
+#   A t t e n d a n c e - M a r k e r - f i n g e r p r i n t  
+ 
