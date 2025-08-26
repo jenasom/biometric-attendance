@@ -24,9 +24,7 @@ Follow the steps below to set up the project locally
 1.  Clone repo:
 
   ```bash
-  [HTTPS] - git clone git@github.com:IamGideonIdoko/bio-attendance-sys.git
-  [SSH] - git clone https://github.com/IamGideonIdoko/bio-attendance-sys.git
-  ```
+ 
 
 2. Install `client` dependencies:
 
@@ -101,20 +99,7 @@ Follow the steps below to set up the project locally
 ## Project DB ERD
 ![Entity Relationship Diagram](./server/prisma/diagrams/ERD-auto.svg)
 
-## Screenshots
-![Screenshot of system 1](./screenshots/bas_screenshot_1.JPG)
 
-![Screenshot of system 2](./screenshots/bas_screenshot_2.JPG)
-
-![Screenshot of system 3](./screenshots/bas_screenshot_3.JPG)
-
-![Screenshot of system 4](./screenshots/bas_screenshot_4.JPG)
-
-![Screenshot of system 5](./screenshots/bas_screenshot_5.jpg)
-
-![Screenshot of system 6](./screenshots/bas_screenshot_6.JPG)
-
-![Screenshot of system 7](./screenshots/bas_screenshot_7.JPG)
 
 ## System Documentation
 
